@@ -1,0 +1,10 @@
+
+error_mssg=$(curl -o "data.json" "https://pokeapi.co/api/v2/pokemon/" 2>&1)
+curl_exit_status=$?
+
+if [ $curl_exit_status -ne 0 ]; then
+  echo "$error_mssg" >> errors.txt
+else
+  echo ""
+fi
+
