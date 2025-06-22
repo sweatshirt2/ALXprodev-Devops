@@ -4,5 +4,8 @@ type=$(jq -r '(.types[0].type.name)' data.json | sed 's/electric/Electric/')
 formatted_weight=$(jq -r '.weight' data.json | awk '{printf "%.1f", $1/10}') 
 formatted_height=$(jq -r '.height' data.json | awk '{printf "%.1f", $1/10}')
 
+# works same as the above one if formatting is not required
+# formatted_height=$(jq -r '.height' data.json | awk '{print $1/10}')
+
 # jq -r '"Pickachu is of type \(.types[0].type.name), weighs \(.weight/10)kg, and is \(.height/10)cm tall."' data.json | sed 's/electric/Electric/'
 echo "$name is of type $type, weighs ${formatted_weight}kg, and is ${formatted_height}m tall."
