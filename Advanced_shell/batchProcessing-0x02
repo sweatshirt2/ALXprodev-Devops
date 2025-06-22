@@ -1,0 +1,48 @@
+#!/bin/bash
+output_dir=pokemon_data
+mkdir $output_dir
+
+pokemons=(bulbasaur ivysaur venusaur charmander charmeleon)
+
+for pokemon in "${pokemons[@]}"; do
+  echo fetching data for $pokemon...
+
+  error_mssg=$(curl -sS -o $output_dir/$pokemon.json https://pokeapi.co/api/v2/pokemon/$pokemon)
+  request_exit_status=$?
+
+  if [ $request_exit_status -ne 0 ]; then
+    echo "$error_message"
+    echo "error"
+  else
+    echo Saved data to $output_dir/$pokemon.json
+  fi
+
+  sleep 1
+done
+
+
+# ! suggested by gpt
+# output_dir=pokemon_data
+# mkdir -p "$output_dir"
+
+# pokemons=(bulbasaur ivysaur venusaur charmander charmeleon)
+
+# for pokemon in "${pokemons[@]}"; do
+#   echo "Fetching data for $pokemon..."
+
+#   # Temp file for headers
+#   header_file=$(mktemp)
+
+#   # Make request, save headers separately, body to a temp file first
+#   http_status=$(curl -sS -w "%{http_code}" -D "$header_file" -o "$output_dir/$pokemon.json" https://pokeapi.co/api/v2/pokemon/$pokemon)
+
+#   if [[ "$http_status" -ne 200 ]]; then
+#     echo "Error fetching $pokemon: HTTP status $http_status"
+#     rm -f "$output_dir/$pokemon.json"  # delete invalid file
+#   else
+#     echo "Saved data to $output_dir/$pokemon.json ✅"
+#   fi
+
+#   rm -f "$header_file"
+#   sleep 1
+# done
