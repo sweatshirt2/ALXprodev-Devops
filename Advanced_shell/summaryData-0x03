@@ -1,0 +1,38 @@
+#!/bin/bash
+# pokemon_report.csv
+echo -e "CSV Report generated at: pokemon_report.csv\n\nName,Height (m),Weight (kg)"
+
+input_dir=pokemon_data
+
+pokemons=(bulbasaur charmander charmeleon ivysaur venusaur)
+
+total_height=0
+total_weight=0
+
+for pokemon in "${pokemons[@]}"; do
+  # ? sneak peek at the json file, pretty print the first 10 lines
+  # jq . $input_dir/$pokemon.json | head -n 10
+  # Todo: explore this option since it is easier
+  # read name height weight < <(
+  #  jq -r '.name,
+  #         .height,
+  #         .weight
+  #       ' ./$input_dir/$pokemon.json
+  #   )
+  file_path="./$input_dir/$pokemon.json"
+
+  name=$(jq -r '.name' $file_path | sed 's/^\(.\)/\U\1/')
+  formatted_height=$(jq -r '.height' $file_path | awk '{printf "%.1f", $1/10}')
+  formatted_weight=$(jq -r '.weight' $file_path | awk '{printf "%.1f", $1/10}')
+
+  total_height=$(echo "$total_height + $formatted_height" | bc)
+  total_weight=$(echo "$total_weight + $formatted_weight" | bc)
+
+  echo "$name,$formatted_height,$formatted_weight"
+done
+
+pokemons_amount=${#pokemons[@]}
+average_height=$(echo "$total_height / $pokemons_amount" | awk '{printf "%.2f", $1/$3}')
+average_weight=$(echo "$total_weight $pokemons_amount" | awk '{printf "%.2f", $1/$2}')
+
+echo -e "\nAverage Height: $average_height\nAverage Weight: $average_weight"
