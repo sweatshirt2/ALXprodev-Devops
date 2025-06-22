@@ -1,1 +1,8 @@
-jq -r '"Pickachu is of type \(.types[0].type.name), weighs \(.weight/10)kg, and is \(.height/10)cm tall."' data.json | sed 's/electric/Electric/'
+#!/bin/bash
+name=Pickachu
+type=$(jq -r '(.types[0].type.name)' data.json | sed 's/electric/Electric/')
+formatted_weight=$(jq -r '(.weight/10)' data.json) 
+formatted_height=$(jq -r '(.height/10)' data.json)
+
+# jq -r '"Pickachu is of type \(.types[0].type.name), weighs \(.weight/10)kg, and is \(.height/10)cm tall."' data.json | sed 's/electric/Electric/'
+echo "$name is of type $type, weighs ${formatted_weight}kg, and is ${formatted_height}m tall."

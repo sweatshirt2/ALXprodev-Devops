@@ -1,4 +1,4 @@
-
+#!/bin/bash
 error_mssg=$(curl -o "data.json" "https://pokeapi.co/api/v2/pokemon/25/" 2>&1)
 curl_exit_status=$?
 
