@@ -1,5 +1,9 @@
 #!/bin/bash
 # pokemon_report.csv
+
+# ? tee without the flag -a is just like >
+# echo -e "CSV Report generated at: pokemon_report.csv\n\nName,Height (m),Weight (kg)" | tee pokemon_report.csv
+echo -e "CSV Report generated at: pokemon_report.csv\n\nName,Height (m),Weight (kg)" > pokemon_report.csv
 echo -e "CSV Report generated at: pokemon_report.csv\n\nName,Height (m),Weight (kg)"
 
 input_dir=pokemon_data
@@ -28,6 +32,9 @@ for pokemon in "${pokemons[@]}"; do
   total_height=$(echo "$total_height + $formatted_height" | bc)
   total_weight=$(echo "$total_weight + $formatted_weight" | bc)
 
+  # ? tee outputs the value and adds it to the file, a better alternative to echo >> then echo again
+  # echo "$name,$formatted_height,$formatted_weight" | tee -a pokemon_report.csv
+  echo "$name,$formatted_height,$formatted_weight" >> pokemon_report.csv
   echo "$name,$formatted_height,$formatted_weight"
 done
 
