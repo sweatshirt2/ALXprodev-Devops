@@ -3,8 +3,9 @@ output_dir=pokemon_data
 mkdir -p $output_dir
 
 pokemons=(bulbasaur ivysaur venusaur charmander charmeleon)
+pids=()
 
-for pokemon in "${pokemons[@]}"; do
+for pokemon in ${pokemons[@]}; do
   (echo fetching data for $pokemon...
 
   attempt_number=1
@@ -22,6 +23,7 @@ for pokemon in "${pokemons[@]}"; do
       break
     fi
   done) &
+  pids+=($!)
 
 done
 
@@ -29,5 +31,10 @@ echo 'Started downloading all in the background...'
 jobs
 
 wait
+
+for pid in ${pids[@]}; do
+  echo "making sure process $pid is killed"
+  kill $pid 2>/dev/null
+done
 
 echo "All data fetched!"
