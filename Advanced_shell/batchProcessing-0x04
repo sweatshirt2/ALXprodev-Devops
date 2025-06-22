@@ -25,6 +25,9 @@ for pokemon in "${pokemons[@]}"; do
 
 done
 
+echo 'Started downloading all in the background...'
+jobs
+
 wait
 
 echo "All data fetched!"
